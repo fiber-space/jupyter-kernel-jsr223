@@ -41,8 +41,8 @@ you have to add an `ant-optional` dependency to ant. E.g. on Ubuntu you install
 
 	$ sudo apt-get install ant-optional 	
 
-The project directory should now contain a `dist` folder showing the following content ( modulo changes
-in version numbers ):
+The project directory should now contain a `dist` folder showing the following content 
+( modulo changes in version numbers ):
 
 	dist
 	├── javadoc
@@ -82,7 +82,10 @@ Finally control the kernel installation with
 
 	$ jupyter kernelspec list
 
-If your installation worked correctly you can now launch your Jupyter notebook and should 
-see something like the following image when you want to create a new notebook
+## Using the kernel 
 
-![https://github.com/fiber-space/jupyter-kernel-jsr223/blob/master/README.md]
+The jupyter-kernel-jsr223 library has been tested only with the Jupyter notebook and I don't intend to support
+any other way to access it in the near future. If your installation worked correctly you can now launch your 
+Jupyter notebook and should see something like the following image when you want to create a new notebook
+
+![jupyter-kernel-selection](https://github.com/fiber-space/jupyter-kernel-jsr223/blob/master/doc/static/Jupyter-kernel-selection.png)

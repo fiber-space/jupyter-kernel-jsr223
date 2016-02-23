@@ -14,6 +14,75 @@ Jython using a tty interface had I/O issues, in particular it scrambled input
 from stdin with output from stdout. Since the kernel wrapper looked
 inscrutable and its author already took some countermeasures which, after all,
 didn't capture many relevant use cases, I decided for another approach, which
+<<<<<<< HEAD
+drops the Jupyter-to-terminal communication entirely. 
+
+The new kernel should
+
+   * handle the Jupyter messaging protocol
+   * use JSR223 ScriptEngines for JVM languages as an abstraction layer
+   * provide at least a working kernel for Jython out of the box
+
+Later I also added a kernel for Clojure.
+
+## Getting started
+
+### Building the project
+
+After having cloned this project repository, switch to the project directory and build the project 
+with ant
+
+	~/home/my/repo/to/jupyter-kernel-jsr223 $ ant
+
+If ant complaints with an exception and the message
+
+ 	org.apache.tools.ant.taskdefs.optional.junit.JUnitTask was not found	
+
+you have to add an `ant-optional` dependency to ant. E.g. on Ubuntu you install 
+
+	$ sudo apt-get install ant-optional 	
+
+The project directory should now contain a `dist` folder showing the following content ( modulo changes
+in version numbers ):
+
+	dist
+	├── javadoc
+	├── jupyter-kernel-jsr223.jar
+	├── lib
+	│   ├── commons-cli-1.2.jar
+	│   ├── jeromq-0.3.6.jar
+	│   └── json.jar
+	└── README.TXT
+
+### Installing kernels and kernel specs
+
+Since jupyter-kernel-jsr223 couples to language implementations only through jsr223 interfaces
+the project is light on dependencies. In reverse this also means one has to install language interpreters
+separately and add their paths in the kernelspec file `kernel.json`. A template for such a file can
+be found at:
+
+
+	kernelspec
+	├── kernel.json
+	└── README
+
+Please open the README for further information.
+
+After the classpath and the options have been properly set, create a new directory e.g.
+
+   /home
+    └── my
+		└── jython_kernel
+		    └── kernel.json
+
+For kernel installation type
+
+	$ jupyter kernelspec install /home/my/jython_kernel
+
+Finally control the kernel installation with	
+
+	$ jupyter kernelspec list
+=======
 drops the Jupyter-to-terminal communication entirely. Instead the kernel should
 
    * implement the Jupyter messaging protocol 5.0
@@ -23,5 +92,6 @@ drops the Jupyter-to-terminal communication entirely. Instead the kernel should
 
 
 
+>>>>>>> c188ebc12b4221da498b5d883d270342fb771138
 
 

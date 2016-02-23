@@ -1,0 +1,10 @@
+{
+ "argv": ["java",
+          "-classpath",
+              "$PATH_TO_INTERPRETER_JAR:$PATH_TO_JUPYTER_KERNEL_JAR",
+          "org.jupyterkernel.kernel.Session",
+              "-k", "$LANGUAGE_NAME_USED_BY_SCRIPT_ENGINE",
+              "-f", "{connection_file}"],
+ "display_name": "$NAMED_DISPLAYED_BY_NOTEBOOK",
+ "language": "$LANGUAGE_NAME"
+}

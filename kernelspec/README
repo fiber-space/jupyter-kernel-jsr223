@@ -1,0 +1,27 @@
+README
+=======
+
+The kernel.json file in this directory is a template for Jupyter kernel specs
+set up according to
+
+    http://jupyter-client.readthedocs.org/en/latest/kernels.html#kernel-specs
+
+In order to have a valid kernel spec you need to replace the sigilled $VARIABLEs
+with appropriate values.
+
+An example of a kernel spec for Jython with paths from my own development machine is
+
+
+    {
+     "argv": ["java",
+              "-classpath",
+                  "/opt/jython2.7.0/jython.jar:/home/kay/NetBeansProjects/jupyter-kernel/dist/jupyter-kernel.jar",
+              "org.jupyterkernel.kernel.Session",
+                  "-k", "python",
+                  "-f", "{connection_file}"],
+     "display_name": "Jython 2.7",
+     "language": "python"
+    }
+
+Note that the special {connection_file} is a Jupyter variable which is filled by Jupyter when it calls
+the kernel. No need to touch it.

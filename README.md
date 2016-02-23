@@ -14,7 +14,6 @@ Jython using a tty interface had I/O issues, in particular it scrambled input
 from stdin with output from stdout. Since the kernel wrapper looked
 inscrutable and its author already took some countermeasures which, after all,
 didn't capture many relevant use cases, I decided for another approach, which
-<<<<<<< HEAD
 drops the Jupyter-to-terminal communication entirely. 
 
 The new kernel should
@@ -70,10 +69,10 @@ Please open the README for further information.
 
 After the classpath and the options have been properly set, create a new directory e.g.
 
-   /home
-    └── my
-		└── jython_kernel
-		    └── kernel.json
+	   home
+	    └── my
+			└── jython_kernel
+			    └── kernel.json
 
 For kernel installation type
 
@@ -82,16 +81,8 @@ For kernel installation type
 Finally control the kernel installation with	
 
 	$ jupyter kernelspec list
-=======
-drops the Jupyter-to-terminal communication entirely. Instead the kernel should
 
-   * implement the Jupyter messaging protocol 5.0
-   * use JSR223 ScriptEngines for language abstraction
-   * provide a kernel for Jython out of the box
+If your installation worked correctly you can now launch your Jupyter notebook and should 
+see something like the following image when you want to create a new notebook
 
-
-
-
->>>>>>> c188ebc12b4221da498b5d883d270342fb771138
-
-
+![https://github.com/fiber-space/jupyter-kernel-jsr223/blob/master/README.md]

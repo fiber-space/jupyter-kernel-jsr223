@@ -84,8 +84,8 @@ public class InteractiveConsole {
     public void stopStreaming() {
         JupyterStreamWriter streamWriter = ((JupyterStreamWriter) this.engine.getContext().getWriter());
         if (streamWriter != null) {
-            streamWriter.stopStreaming();
-        }
+            streamWriter.stopStreaming();            
+        }        
     }
 
     public String getMIMEType() {

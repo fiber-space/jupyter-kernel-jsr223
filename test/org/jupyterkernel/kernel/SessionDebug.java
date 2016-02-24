@@ -61,6 +61,5 @@ public class SessionDebug {
         System.out.println("main");
         String[] args = null;
         Session.main(args);          
-    }
-    
+    }    
 }

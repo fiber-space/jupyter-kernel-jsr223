@@ -44,7 +44,13 @@ class DisplayHook:
 
     def __init__(self):
         # default mimetype
+        self.print_expr = []
         self.mimetype = 'text/plain'  
+
+    def read(self):
+        S = ''.join(self.print_expr)
+        self.print_expr = []
+        return S
 
     def __call__(self, o):
         self.mimetype = 'text/plain'  
@@ -56,13 +62,13 @@ class DisplayHook:
             if repr:
                 try:
                     S = repr()
-                    print(S)
+                    self.print_expr.append(S)
                 except TypeError:
-                    print(o)
+                    self.print_expr.append(str(o))
                 self.mimetype = mimetype
                 break
         else:            
-            print(o)        
+            self.print_expr.append(str(o))
         __builtin__._ = o
     
 

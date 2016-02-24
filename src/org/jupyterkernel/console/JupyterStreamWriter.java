@@ -13,9 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.jupyterkernel.console;
 
+import java.util.ArrayDeque;
 import java.io.StringWriter;
 import org.jupyterkernel.json.messages.T_stream;
 import org.jupyterkernel.kernel.MessageObject;
@@ -25,12 +25,12 @@ import java.util.TimerTask;
 /**
  *
  * @author kay schluehr
- * 
- * Used to stream data to stdout during code execution in 'exec' mode. 
- * 
- * NOTE: 'single' mode execution should produce output in an Out[] cell. 
- *       Since data from stdout won't be streamed the result of print()
- *       actions will be collected and returned in the end.
+ *
+ * Used to stream data to stdout during code execution in 'exec' mode.
+ *
+ * NOTE: 'single' mode execution should produce output in an Out[] cell. Since
+ * data from stdout won't be streamed the result of print() actions will be
+ * collected and returned in the end.
  */
 public class JupyterStreamWriter extends StringWriter {
 
@@ -42,7 +42,7 @@ public class JupyterStreamWriter extends StringWriter {
         this.message = stream;
         streaming();
     }
-
+ 
     public void stopStreaming() {
         timer.cancel();
         // one last shot
@@ -54,7 +54,7 @@ public class JupyterStreamWriter extends StringWriter {
                 sb.delete(0, sb.length());
                 ((T_stream) message.msg.content).text = S;
                 message.send();
-            }            
+            }
         }
     }
 

@@ -242,7 +242,7 @@ public class Kernel extends Thread {
         message.msg.content = reply;
         message.msg.header.msg_type = "execute_reply";
 
-        if (obj == null && res.length() == 0 && err.length() == 0) {
+        if (res.length() == 0 && err.length() == 0) {
             reply.status = "ok";
             reply.setAnswer(new T_execute_reply_ok());
             return new MessageObject[]{message};

@@ -83,6 +83,16 @@ public class JythonConsole extends InteractiveConsole {
         }
     }
 
+    private String readPrintExpr() {
+        try {
+            return (String) engine.eval("sys.displayhook.read()");
+        } catch (ScriptException ex) {
+            Logger.getLogger(JythonConsole.class
+                    .getName()).log(Level.SEVERE, null, ex);
+            return "";
+        }
+    }
+
     @Override
     public String getMIMEType() {
         if (ex != null) {
@@ -101,11 +111,10 @@ public class JythonConsole extends InteractiveConsole {
     public Object eval(String codeString) {
         ex = null;
         try {
-            if (codeString.indexOf('\n') == -1) {
-                stopStreaming();
-                engine.getContext().setWriter(stdoutWriter);
+            if (codeString.indexOf('\n') == -1) {                                
                 engine.eval(String.format("exec(compile('''%s''', '<string>', 'single'), locals())", codeString));
-                return null;
+                stopStreaming();
+                return readPrintExpr();
             } else {
                 // check that code compiles at all but don't evaluated it yet
                 String c = String.format("__code = compile('''%s''', '<string>', 'exec')", codeString);
@@ -154,20 +163,21 @@ public class JythonConsole extends InteractiveConsole {
                             + "exec(__code, locals())\n"
                             + "del(__code)";
                     code = String.format(code, lastBlock, lastBlock);
-                    stopStreaming();
-                    engine.getContext().setWriter(stdoutWriter);
+                                        
                     engine.eval(code);
-                    // no need to return a value
-                    return null;
+                    stopStreaming();
+                    return readPrintExpr();
                 }
 
-                // so only the whole codeString will execute. We did already compile it
+                // so only the whole codeString will execute. We already compiled it
                 String code = "exec(__code, locals())\n"
                         + "del(__code)";
                 engine.eval(code);
-                return null;
+                stopStreaming();
+                return readPrintExpr();
             }
         } catch (ScriptException e2) {
+            stopStreaming();
             ex = e2;
             setErrorMessage();
         }

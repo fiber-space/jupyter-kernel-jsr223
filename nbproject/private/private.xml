@@ -3,12 +3,12 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/home/kay/NetBeansProjects/jupyter-kernel/src/org/jupyterkernel/console/InteractiveConsole.java</file>
-            <file>file:/home/kay/NetBeansProjects/jupyter-kernel/src/org/jupyterkernel/console/ClojureConsole.java</file>
-            <file>file:/home/kay/NetBeansProjects/jupyter-kernel/src/org/jupyterkernel/console/JythonConsole.java</file>
-            <file>file:/home/kay/NetBeansProjects/jupyter-kernel/src/org/jupyterkernel/kernel/Kernel.java</file>
-            <file>file:/home/kay/NetBeansProjects/jupyter-kernel/src/org/jupyterkernel/kernel/Session.java</file>
-            <file>file:/home/kay/NetBeansProjects/jupyter-kernel/test/org/jupyterkernel/kernel/SessionDebug.java</file>
+            <file>file:/home/kay/NetBeansProjects/jupyter-kernel-jsr223/test/org/jupyterkernel/kernel/SessionDebug.java</file>
+            <file>file:/home/kay/NetBeansProjects/jupyter-kernel-jsr223/src/org/jupyterkernel/kernel/Kernel.java</file>
+            <file>file:/home/kay/NetBeansProjects/jupyter-kernel-jsr223/src/org/jupyterkernel/console/JythonConsole.java</file>
+            <file>file:/home/kay/NetBeansProjects/jupyter-kernel-jsr223/src/org/jupyterkernel/console/InteractiveConsole.java</file>
+            <file>file:/home/kay/NetBeansProjects/jupyter-kernel-jsr223/src/org/jupyterkernel/console/resources/start.py</file>
+            <file>file:/home/kay/NetBeansProjects/jupyter-kernel-jsr223/src/org/jupyterkernel/console/JupyterStreamWriter.java</file>
         </group>
     </open-files>
 </project-private>

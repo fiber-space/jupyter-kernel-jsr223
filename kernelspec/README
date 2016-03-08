@@ -9,23 +9,18 @@ set up according to
 In order to have a valid kernel spec you need to replace the sigilled $VARIABLEs
 with appropriate values.
 
-<<<<<<< HEAD
 Jython example
 --------------
 
-=======
->>>>>>> c188ebc12b4221da498b5d883d270342fb771138
 An example of a kernel spec for Jython with paths from my own development machine is
 
 
     {
      "argv": ["java",
               "-classpath",
-<<<<<<< HEAD
+
                   "/opt/jython2.7.0/jython.jar:/opt/jupyter-kernel-jsr223/jupyter-kernel-jsr223.jar",
-=======
                   "/opt/jython2.7.0/jython.jar:/home/kay/NetBeansProjects/jupyter-kernel/dist/jupyter-kernel.jar",
->>>>>>> c188ebc12b4221da498b5d883d270342fb771138
               "org.jupyterkernel.kernel.Session",
                   "-k", "python",
                   "-f", "{connection_file}"],
@@ -35,7 +30,6 @@ An example of a kernel spec for Jython with paths from my own development machin
 
 Note that the special {connection_file} is a Jupyter variable which is filled by Jupyter when it calls
 the kernel. No need to touch it.
-<<<<<<< HEAD
 
 Clojure example
 ---------------
@@ -62,6 +56,3 @@ Note that both the clojure-xxx.jar as well as the clojure-jsr223-xxx.jar have to
      "language": "clojure"
     }
 
-
-=======
->>>>>>> c188ebc12b4221da498b5d883d270342fb771138

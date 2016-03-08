@@ -1,5 +1,4 @@
-README
-=======
+## README
 
 The kernel.json file in this directory is a template for Jupyter kernel specs
 set up according to
@@ -9,8 +8,7 @@ set up according to
 In order to have a valid kernel spec you need to replace the sigilled $VARIABLEs
 with appropriate values.
 
-Jython example
---------------
+### Jython example
 
 An example of a kernel spec for Jython with paths from my own development machine is
 
@@ -31,8 +29,7 @@ An example of a kernel spec for Jython with paths from my own development machin
 Note that the special {connection_file} is a Jupyter variable which is filled by Jupyter when it calls
 the kernel. No need to touch it.
 
-Clojure example
----------------
+### Clojure example
 
 Unlike Jython, Clojure 1.8.0 doesn't support jsr223 out of the box. Instead one needs a 3rd party implementation.
 
@@ -40,8 +37,8 @@ I can recommend the following one
 
     https://github.com/ato/clojure-jsr223
 
-which I used for debugging. Unlike another implementation by the same author it properly supports customization
-of Stdout.
+which I used for debugging. Unlike another implementation by the same author it
+properly supports customization of Stdout.
 
 Note that both the clojure-xxx.jar as well as the clojure-jsr223-xxx.jar have to be added to the classpath:
 

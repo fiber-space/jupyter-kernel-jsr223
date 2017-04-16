@@ -31,27 +31,27 @@ Later I also added a kernel for Clojure.
 After having cloned this project repository, switch to the project directory and build the project 
 with ant
 
-	~/home/my/repo/to/jupyter-kernel-jsr223 $ ant
+    ~/home/my/repo/to/jupyter-kernel-jsr223 $ ant
 
 If ant complaints with an exception and the message
 
- 	org.apache.tools.ant.taskdefs.optional.junit.JUnitTask was not found	
+    org.apache.tools.ant.taskdefs.optional.junit.JUnitTask was not found    
 
 you have to add an `ant-optional` dependency to ant. E.g. on Ubuntu you install 
 
-	$ sudo apt-get install ant-optional 	
+    $ sudo apt-get install ant-optional
 
 The project directory should now contain a `dist` folder showing the following content 
 ( modulo changes in version numbers ):
 
-	dist
-	├── javadoc
-	├── jupyter-kernel-jsr223.jar
-	├── lib
-	│   ├── commons-cli-1.2.jar
-	│   ├── jeromq-0.3.6.jar
-	│   └── json.jar
-	└── README.TXT
+    dist
+    ├── javadoc
+    ├── jupyter-kernel-jsr223.jar
+    ├── lib
+    │   ├── commons-cli-1.2.jar
+    │   ├── jeromq-0.3.6.jar
+    │   └── json.jar
+    └── README.TXT
 
 ### Installing kernels and kernel specs
 
@@ -61,26 +61,26 @@ separately and add their paths in the kernelspec file `kernel.json`. A template 
 be found at:
 
 
-	kernelspec
-	├── kernel.json
-	└── README
+    kernelspec
+    ├── kernel.json
+    └── README
 
 Please open the README for further information.
 
 After the classpath and the options have been properly set, create a new directory e.g.
 
-	   home
-	    └── my
-			└── jython_kernel
-			    └── kernel.json
+       home
+        └── my
+            └── jython_kernel
+                └── kernel.json
 
 For kernel installation type
 
-	$ jupyter kernelspec install /home/my/jython_kernel
+    $ jupyter kernelspec install /home/my/jython_kernel
 
-Finally control the kernel installation with	
+Finally control the kernel installation with    
 
-	$ jupyter kernelspec list
+    $ jupyter kernelspec list
 
 ## Using the kernel 
 
@@ -89,3 +89,56 @@ any other way to access it in the near future. If your installation worked corre
 Jupyter notebook and should see something like the following image when you want to create a new notebook
 
 ![jupyter-kernel-selection](https://github.com/fiber-space/jupyter-kernel-jsr223/blob/master/doc/static/Jupyter-kernel-selection.png)
+
+
+## Creating non-JSR223 compliant kernels
+
+Internally a JSR223 compliant ScriptEngine is created using the ScriptEngineManager factory function `getEngineByName`. If no
+implementation of the desired ScriptEngine interface is available, the function returns `null` and the kernel launcher fails.
+
+However it is easily possible to build a non-JSR223 compliant kernel library which depends on jupyter-kernel-jsr223.jar.
+
+Example:
+
+    MyConsole.Java
+    -------------------
+
+    import org.jupyterkernel.console.IInteractiveConsole;
+
+    class MyConsole implements IInteractiveConsole
+    {
+        // implement the methods of IInteractiveConsole
+    }
+
+
+    MySession.java
+    --------------
+
+    import org.jupyterkernel.kernel.Session;
+    import org.jupyterkernel.kernel.Kernel;
+
+    class MySession extends org.jupyterkernel.kernel.Session
+    {
+        @Override
+        public void setKernel(String kernelName)
+        {
+            this.kernel = new Kernel(kernelName, new MyConsole());
+        }
+
+        public static void main(String[] args) throws FileNotFoundException,
+            InvalidKeyException,
+            UnsupportedEncodingException,
+            IOException 
+        {
+            MySession session = new MySession();
+            if (args==null || args.length == 0) {
+                Session.runKernelDebug(session);
+            } 
+            else {
+                Session.runKernel(session, args);
+            }
+        }
+    }
+
+    
+Alternatively you can also derive `MyConsole` from `InteractiveConsole` if you want to reuse methods.

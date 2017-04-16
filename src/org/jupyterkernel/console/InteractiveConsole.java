@@ -33,12 +33,10 @@ import java.net.URL;
 import java.net.URLClassLoader;
 import org.jupyterkernel.json.messages.T_kernel_info_reply;
 
-public class InteractiveConsole {
+public class InteractiveConsole implements IInteractiveConsole {
 
     ScriptEngine engine;
     ScriptException ex;
-
-    ArrayList<CompiledScript> compiledChunks = new ArrayList<>();
 
     StringWriter stdoutWriter = new StringWriter();
     StringWriter stderrWriter = new StringWriter();
@@ -61,6 +59,13 @@ public class InteractiveConsole {
 
         System.out.println("Classpath is " + strClassPath);
     }
+    
+    public InteractiveConsole(ScriptEngine engine) {
+        this.engine = engine;
+        this.engine.getContext().setWriter(stdoutWriter);
+        this.engine.getContext().setErrorWriter(stderrWriter);
+
+    }
 
     public InteractiveConsole(String kernel) {
         ScriptEngineManager manager = new ScriptEngineManager();
@@ -73,14 +78,17 @@ public class InteractiveConsole {
         engine.getContext().setErrorWriter(stderrWriter);
     }
 
+    @Override
     public void setStdinReader(ConsoleInputReader reader) {
         this.engine.getContext().setReader(new BufferedReader(reader));
     }
 
+    @Override
     public void setStreamWriter(JupyterStreamWriter streamWriter) {
         this.engine.getContext().setWriter(streamWriter);
     }
 
+    @Override
     public void stopStreaming() {
         JupyterStreamWriter streamWriter = ((JupyterStreamWriter) this.engine.getContext().getWriter());
         if (streamWriter != null) {
@@ -88,15 +96,18 @@ public class InteractiveConsole {
         }        
     }
 
+    @Override
     public String getMIMEType() {
         return "text/plain";
     }
 
+    @Override
     public void setCellNumber(int cell) {
         cellnum = cell;
     }
 
     // used to handle complete_request message
+    @Override
     public int getCompletionCursorPosition() {
         return this.completionCursorPosition;
     }
@@ -105,6 +116,7 @@ public class InteractiveConsole {
         ex.printStackTrace(new PrintWriter(stderrWriter));
     }
 
+    @Override
     public String[] getTraceback() {
         return null;
     }
@@ -115,6 +127,7 @@ public class InteractiveConsole {
      * @return result of the evaluation
      *
      */
+    @Override
     public Object eval(String codeString) {
         CompiledScript compiledScript;
         ex = null;
@@ -128,6 +141,7 @@ public class InteractiveConsole {
         return null;
     }
 
+    @Override
     public String readAndClearStdout() {
         String S = stdoutWriter.toString();
         stdoutWriter.flush();
@@ -136,6 +150,7 @@ public class InteractiveConsole {
         return S;
     }
 
+    @Override
     public String readAndClearStderr() {
         String S = stderrWriter.toString();
         stderrWriter.flush();
@@ -145,10 +160,12 @@ public class InteractiveConsole {
     }
 
     // language specific -- not implemented here
+    @Override
     public String[] completion(String source, int cursor_position) {
         return new String[]{};
     }
 
+    @Override
     public T_kernel_info_reply getKernelInfo() {
         return new T_kernel_info_reply();
     }

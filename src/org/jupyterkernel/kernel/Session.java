@@ -79,13 +79,10 @@ public class Session extends Thread {
     Kernel kernel;
 
     boolean restart_kernel_requested = false;
-
-    public Session(JSONObject connectionData, Kernel kernel) throws InvalidKeyException,
-            UnsupportedEncodingException {
-        this.connectionData = connectionData;
-        this.kernel = kernel;
-        getKey();
-    }
+    
+    public Session()
+    {        
+    }            
 
     void closeSockets() {
         try {
@@ -109,7 +106,9 @@ public class Session extends Thread {
         }
     }
     
-    private byte[] getKey() throws InvalidKeyException, UnsupportedEncodingException {
+    private byte[] getKey() throws 
+            InvalidKeyException, 
+            UnsupportedEncodingException {
         if (key == null) {
             String sKey = (String) connectionData.get("key");
             /*
@@ -179,7 +178,9 @@ public class Session extends Thread {
         return true;
     }
 
-    public static JSONObject readConnectionFile(String connectionFilePath) throws FileNotFoundException, IOException {
+    public static JSONObject readConnectionFile(String connectionFilePath) throws 
+            FileNotFoundException, 
+            IOException {
         if (Session._DEBUG_) {
             System.out.println("ConnectionFilePath: " + connectionFilePath);
         }
@@ -194,6 +195,19 @@ public class Session extends Thread {
         // parse connection file content into JSON object
         return new JSONObject(new String(content, "UTF-8"));
     }
+    
+    public void setKernel(String kernelName)
+    {
+        this.kernel = new Kernel(kernelName);
+    }
+    
+    public void setConnectionData(JSONObject connectionData) throws 
+            InvalidKeyException,
+            UnsupportedEncodingException 
+    {
+        this.connectionData = connectionData;        
+        getKey();        
+    }
 
     @Override
     public void run() {
@@ -206,7 +220,8 @@ public class Session extends Thread {
             kernel.setIOPubTemplate(new MessageObject(null, IOPub, key));
             kernel.setConnectionData(connectionData);
             System.out.println(
-                    String.format("[jupyter-kernel.jar] %s kernel started.", kernel.getKernel())
+                    String.format("[jupyter-kernel.jar] %s kernel started.", 
+                            kernel.getKernel())
             );
             while (!this.isInterrupted()) {
                 byte[] message;
@@ -235,9 +250,10 @@ public class Session extends Thread {
         } finally {
             closeSockets();
         }
-    }
+    }    
 
-    static void runKernel(String[] args) throws FileNotFoundException,
+    public static void runKernel(Session session, String[] args) throws 
+            FileNotFoundException,
             InvalidKeyException,
             UnsupportedEncodingException,
             IOException {
@@ -259,11 +275,13 @@ public class Session extends Thread {
 
             JSONObject connectionData = readConnectionFile(connectionFilePath);
             if (Session._DEBUG_) {
-                System.out.println("Connection File\n------------------------------------");
+                System.out.println(
+                        "Connection File\n------------------------------------");
                 System.out.println(connectionData.toString(4));
             }
 
-            Session session = new Session(connectionData, new Kernel(kernelName));
+            session.setKernel(kernelName);
+            session.setConnectionData(connectionData); 
 
             try {
                 session.start();
@@ -273,7 +291,7 @@ public class Session extends Thread {
         }
     }
 
-    public static void runKernelDebug() throws FileNotFoundException,
+    public static void runKernelDebug(Session session) throws FileNotFoundException,
             InvalidKeyException,
             UnsupportedEncodingException,
             IOException {
@@ -285,17 +303,18 @@ public class Session extends Thread {
         String sArgs = new String(msg, StandardCharsets.UTF_8);
         String[] newArgs = sArgs.split(" ");
         channel.send("ok");
-        runKernel(newArgs);
+        runKernel(session, newArgs);
     }
 
     public static void main(String[] args) throws FileNotFoundException,
             InvalidKeyException,
             UnsupportedEncodingException,
             IOException {
+        Session session = new Session();
         if (args==null || args.length == 0) {
             // Used for debugging the kernel. 
             // Start this application in your IDE first. 
-            runKernelDebug();
+            runKernelDebug(session);
         } else {
             if (Session._DEBUG_) {
                 System.out.println("BEGIN ARGS");
@@ -304,7 +323,7 @@ public class Session extends Thread {
                 }
                 System.out.println("END ARGS");
             }
-            runKernel(args);
+            runKernel(session, args);
         }
     }
 }

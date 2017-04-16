@@ -19,7 +19,11 @@ package org.jupyterkernel.console;
  *
  * @author kay schluehr
  */
+
+import javax.script.ScriptEngine;
+
 public class ConsoleFactory {
+
     public static InteractiveConsole createConsole(String name)
     {
         switch(name)

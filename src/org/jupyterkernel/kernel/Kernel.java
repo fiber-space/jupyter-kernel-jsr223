@@ -15,7 +15,7 @@
  */
 package org.jupyterkernel.kernel;
 
-import org.jupyterkernel.console.InteractiveConsole;
+import org.jupyterkernel.console.IInteractiveConsole;
 import org.jupyterkernel.json.messages.*;
 import javax.script.*;
 import java.util.ArrayDeque;
@@ -75,7 +75,8 @@ public class Kernel extends Thread {
 
     ScriptEngineManager manager;
     ScriptEngine engine;
-    InteractiveConsole console;
+    
+    IInteractiveConsole console;
     String kernel;
 
     JSONObject connectionData;
@@ -95,6 +96,11 @@ public class Kernel extends Thread {
     MessageObject iopubTemplate;
 
     ExecuteRequestHandler execute_request_handler = new ExecuteRequestHandler();
+
+    public Kernel(String name, IInteractiveConsole console) {
+        this.kernel = name;
+        this.console = console;
+    }
 
     public Kernel(String name) {
         kernel = name;

@@ -11,7 +11,8 @@ with appropriate values.
 ### Jython example
 
 An example of a kernel spec for Jython with paths from my own development machine is
-
+Note that the special {connection_file} is a Jupyter variable which is filled by Jupyter when it calls
+the kernel. No need to touch it.
 
     {
      "argv": ["java",
@@ -26,8 +27,22 @@ An example of a kernel spec for Jython with paths from my own development machin
      "language": "python"
     }
 
+    
+    
+### Jython example for Windows
 Note that the special {connection_file} is a Jupyter variable which is filled by Jupyter when it calls
 the kernel. No need to touch it.
+    {
+      "argv": ["java",
+        "-classpath",
+        "C:\\jython2.7.0\\jython.jar;C:\\git\\jupyter-kernel-jsr223\\dist\\jupyter-kernel-jsr223.jar;C:\\git\\jupyter-kernel-jsr223\\lib\\jeromq-0.3.6.jar;C:\\git\\jupyter-kernel-jsr223\\lib\\commons-cli-1.2.jar;C:\\git\\jupyter-kernel-jsr223\\lib\\json.jar",
+        "org.jupyterkernel.kernel.Session",
+        "-k", "python",
+        "-f", "{connection_file}"],
+      "display_name": "Jython 2.7",
+      "language": "python"
+    }
+
 
 ### Clojure example
 

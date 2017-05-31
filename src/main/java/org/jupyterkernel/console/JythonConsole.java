@@ -64,6 +64,11 @@ public class JythonConsole extends InteractiveConsole {
 
     private void setDisplayhook() {
         InputStream in = getClass().getResourceAsStream("resources/start.py");
+        if (in == null) {
+            Logger.getLogger(JythonConsole.class.getName()).log(Level.WARNING,
+            "No startup script found in resources, ignoring.");
+            return;
+        }
         BufferedReader reader = new BufferedReader(new InputStreamReader(in));
         StringBuilder sb = new StringBuilder();
         String line;

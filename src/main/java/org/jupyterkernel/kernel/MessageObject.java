@@ -21,9 +21,6 @@ import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
-import java.lang.StringBuilder;
-import javax.xml.bind.DatatypeConverter;
-
 import org.json.JSONObject;
 import org.jupyterkernel.json.messages.T_JSON;
 import org.jupyterkernel.json.messages.T_header;
@@ -31,6 +28,7 @@ import org.zeromq.ZMQ.Socket;
 import org.zeromq.ZMsg;
 import org.zeromq.ZFrame;
 import org.jupyterkernel.json.messages.T_message;
+import org.jupyterkernel.util.HexBinaryConverter;
 import org.jupyterkernel.util.UUID;
 
 /**
@@ -43,7 +41,7 @@ import org.jupyterkernel.util.UUID;
  */
 public class MessageObject {
     
-    final String[] supportedProtocolVersions = {"5.0"};
+    final String[] supportedProtocolVersions = {"5.0", "5.1", "5.2", "5.3"};
     final String delimiter  = "<IDS|MSG>";
     final byte[] bDelimiter = delimiter.getBytes();
 
@@ -165,7 +163,7 @@ public class MessageObject {
             byte[] digest = computeSignature(header, parent, meta, content);
             byte[] hmac = zframes[MessageParts.HMAC].getData();
             // hmac is an UTF-8 string and has to be converted into a byte array first
-            hmac = DatatypeConverter.parseHexBinary(new String(hmac));
+            hmac = HexBinaryConverter.parseHexBinary(new String(hmac));
             
             mildlySecureMACCompare(digest, hmac);
             
@@ -200,7 +198,7 @@ public class MessageObject {
         byte[] meta    = jsonMsg.getJSONObject("metadata").toString().getBytes();
         byte[] content = jsonMsg.getJSONObject("content").toString().getBytes();
         byte[] digest  = computeSignature(header, parent, meta, content);
-        digest = DatatypeConverter.printHexBinary(digest).toLowerCase().getBytes();
+        digest = HexBinaryConverter.toHexBinary(digest).toLowerCase().getBytes();
         newZmsg.add(digest);
         newZmsg.add(header);
         newZmsg.add(parent);

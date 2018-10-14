@@ -153,15 +153,19 @@ public class Kernel extends Thread {
             for (Method m : methods) {
                 if (m.getName().equals(msgType)) {
                     try {
-                        responseMessages = (MessageObject[]) m.invoke(this, message);
+                        responseMessages = (MessageObject[]) m.invoke(this, 
+                                message);
                         break;
-                    } catch (IllegalAccessException | InvocationTargetException e) {
+                    } catch (IllegalAccessException | 
+                            InvocationTargetException e) {
                         e.printStackTrace(System.err);
                     }
                 }
             }
             if (responseMessages.length == 0) {
-                throw new RuntimeException("Message handler not implemented for message type '" + msgType + "'");
+                throw new RuntimeException(
+                        "Message handler not implemented for message type '" + 
+                                msgType + "'");
             }
             // now send all messages in sequence 
             for (MessageObject response : responseMessages) {
@@ -179,6 +183,14 @@ public class Kernel extends Thread {
         commClose.comm_id = commOpen.comm_id;
         message.msg.content = commClose;
         message.msg.header.msg_type = "comm_close";
+        return new MessageObject[]{message};
+    }
+
+        public MessageObject[] comm_info_request(MessageObject message) {
+        // TODO: figure out if you can do anything with comms
+        //       Currently the reply to a comm_open will just be comm_close.
+        T_comm_info_request commInfoRequest = (T_comm_info_request) message.msg.content;
+        T_comm_info_reply commInfoReply = new T_comm_info_reply();
         return new MessageObject[]{message};
     }
 
@@ -298,7 +310,10 @@ public class Kernel extends Thread {
         message.msg.header.msg_type = "complete_reply";
         return new MessageObject[]{message};
     }
-
+    
+    // Deprecated since version 5.1
+    // see http://jupyter-client.readthedocs.io/en/latest/messaging.html#connect
+    @Deprecated  
     public MessageObject[] connect_request(MessageObject message) {
         message.msg.header.msg_type = "connect_reply";
         T_connect_reply reply = new T_connect_reply();

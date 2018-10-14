@@ -26,11 +26,8 @@ import javax.script.ScriptEngineManager;
 import javax.script.ScriptException;
 import javax.script.CompiledScript;
 import javax.script.Compilable;
-import java.util.ArrayList;
 import java.io.StringWriter;
 import java.io.PrintWriter;
-import java.net.URL;
-import java.net.URLClassLoader;
 import org.jupyterkernel.json.messages.T_kernel_info_reply;
 
 public class InteractiveConsole implements IInteractiveConsole {
@@ -46,19 +43,6 @@ public class InteractiveConsole implements IInteractiveConsole {
 
     public InteractiveConsole() {
     }
-
-    private void getClasses() {
-        ClassLoader cl = ClassLoader.getSystemClassLoader();
-
-        URL[] urls = ((URLClassLoader) cl).getURLs();
-
-        for (URL url : urls) {
-            System.out.println(url.getFile());
-        }
-        String strClassPath = System.getProperty("java.class.path");
-
-        System.out.println("Classpath is " + strClassPath);
-    }
     
     public InteractiveConsole(ScriptEngine engine) {
         this.engine = engine;
@@ -71,8 +55,8 @@ public class InteractiveConsole implements IInteractiveConsole {
         ScriptEngineManager manager = new ScriptEngineManager();
         engine = manager.getEngineByName(kernel);
         if (engine == null) {
-            getClasses();
-            throw new RuntimeException("ScriptEngine not found. Please check your classpath.");
+            System.out.println("Classpath is " + System.getProperty("java.class.path"));
+            throw new RuntimeException("ScriptEngine '"+kernel+"' not found. Please check your classpath.");
         }
         engine.getContext().setWriter(stdoutWriter);
         engine.getContext().setErrorWriter(stderrWriter);

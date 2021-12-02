@@ -170,7 +170,7 @@ public class Session extends Thread {
             Logger.getLogger(Session.class.getName()).log(Level.SEVERE, null, e);
         }
 
-        sockets = new ZMQ.Poller(4);
+        sockets = ctx.createPoller(4);
         sockets.register(Control, ZMQ.Poller.POLLIN);
         sockets.register(Heartbeat, ZMQ.Poller.POLLIN);
         sockets.register(Shell, ZMQ.Poller.POLLIN);
